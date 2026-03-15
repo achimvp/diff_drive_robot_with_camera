@@ -48,3 +48,7 @@ log/
 # Checkpoint files
 *.pt
 *.ckpt
+*.weights
+*.h5
+*.pth
+*.onnx
