@@ -1,0 +1,3 @@
+[submodule "ros_arduino_bridge"]
+	path = ros_arduino_bridge
+	url = https://github.com/achimvp/ros_arduino_bridge

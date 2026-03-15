@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<robot name="boxbot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <ros2_control name="GazeboSimSystem" type="system">
+        <xacro:if value="$(arg use_gazebo)">
+            <hardware>
+                <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+            </hardware>
+        </xacro:if>
+        <xacro:unless value="$(arg use_gazebo)">
+            <hardware>
+                <plugin>boxbot_arduino/BoxbotSystemHardware</plugin> <!-- Put the real hardware plugin here -->
+                <!-- <param name="config_file" value="$(find description)/config/ros2_control.yaml"/> -->
+                <param name="left_wheel_name">left_wheel_joint</param>
+                <param name="right_wheel_name">right_wheel_joint</param>
+                <param name="loop_rate">50</param>
+                <param name="device">/dev/ttyACM0</param>
+                <param name="baud_rate">115200</param>
+                <param name="timeout">1000</param>
+                <param name="enc_counts_per_rev_left">6533</param>
+                <param name="enc_counts_per_rev_right">6533</param>
+                <param name="camera_body_name">camera_body_joint</param>
+                <param name="camera_head_name">camera_head_joint</param>
+                <param name="imu_name">imu_sensor</param>
+            </hardware>
+        </xacro:unless>
+        <!-- Define controllable joints here -->
+        <!-- <joint name="camera_body_joint">
+            <command_interface name="position">
+                <param name="min">-1.57</param>
+                <param name="max">1.57</param>
+            </command_interface>
+            <state_interface name="position"> 
+                <param name="initial_value" value="0.0"/>
+            </state_interface>
+        </joint>
+        <joint name="camera_head_joint">
+            <command_interface name="position">
+                <param name="min">-1.57</param>
+                <param name="max">1.57</param>
+            </command_interface>
+            <state_interface name="position"> 
+                <param name="initial_value" value="0.0"/>
+            </state_interface>
+        </joint> -->
+        <joint name="camera_body_joint">
+            <command_interface name="position">
+                <param name="min">-1.57</param>
+                <param name="max">1.57</param>
+                <param name="default_value">0.0</param>
+            </command_interface>
+            <state_interface name="position"> 
+                <param name="initial_value" value="0.0"/>
+            </state_interface>
+            <state_interface name="velocity"> 
+                <param name="initial_value" value="0.0"/>
+            </state_interface>
+        </joint>
+        <joint name="camera_head_joint">
+            <command_interface name="position">
+                <param name="min">-1.57</param>
+                <param name="max">1.57</param>
+                <param name="default_value">0.0</param>
+            </command_interface>
+            <state_interface name="position"> 
+                <param name="initial_value" value="0.0"/>
+            </state_interface>
+            <state_interface name="velocity"> 
+                <param name="initial_value" value="0.0"/>
+            </state_interface>
+        </joint>
+        <joint name="left_wheel_joint">
+            <command_interface name="velocity">
+                <param name="min">-10.0</param>
+                <param name="max">10.0</param>
+                <param name="default_value">0.0</param>
+            </command_interface>
+            <state_interface name="position"> 
+                <param name="initial_value" value="0.0"/>
+            </state_interface>
+            <state_interface name="velocity"> 
+                <param name="initial_value" value="0.0"/>
+            </state_interface>
+        </joint>
+        <joint name="right_wheel_joint">
+            <command_interface name="velocity">
+                <param name="min">-10.0</param>
+                <param name="max">10.0</param>
+                <param name="default_value">0.0</param>
+            </command_interface>
+            <state_interface name="position"> 
+                <param name="initial_value" value="0.0"/>
+            </state_interface>
+            <state_interface name="velocity"> 
+                <param name="initial_value" value="0.0"/>
+            </state_interface>
+        </joint>
+        <sensor name="imu_sensor">
+            <state_interface name="orientation.x"/>
+            <state_interface name="orientation.y"/>
+            <state_interface name="orientation.z"/>
+            <state_interface name="orientation.w"/>
+            <state_interface name="linear_acceleration.x"/>
+            <state_interface name="linear_acceleration.y"/>
+            <state_interface name="linear_acceleration.z"/>
+            <state_interface name="angular_velocity.x"/>
+            <state_interface name="angular_velocity.y"/>
+            <state_interface name="angular_velocity.z"/>
+        </sensor>
+    </ros2_control>
+    <!-- If we are in simulation we have to load the Gazebo plugins -->
+    <xacro:if value="$(arg use_gazebo)">
+        <gazebo>
+            <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+                <parameters>$(find description)/config/ros2_control.yaml</parameters>
+            </plugin>
+        </gazebo>
+    </xacro:if>
+</robot>

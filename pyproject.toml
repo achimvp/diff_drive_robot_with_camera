@@ -1,0 +1,11 @@
+[project]
+name = "diff-drive-with-camera-ws"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy<2.0",
+    "opencv-python<=4.11.0",
+    "setuptools==79.0.1",
+]

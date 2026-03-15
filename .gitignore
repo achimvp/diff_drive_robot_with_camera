@@ -30,3 +30,21 @@
 *.exe
 *.out
 *.app
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ROS2 build files
+build/
+install/
+log/
+
+# IDE files
+.vscode/
+.idea/
+
+# Checkpoint files
+*.pt
+*.ckpt
