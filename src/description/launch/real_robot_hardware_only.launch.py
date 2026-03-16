@@ -49,18 +49,6 @@ def generate_launch_description():
     #     launch_arguments={'gz_args': world_file, 'shutdown_on_exit': 'true'}.items(),
     # )
 
-    # (Optional) Start RViz to visualize the robot
-    rviz_node = Node(
-        package="rviz2",
-        executable="rviz2",
-        name="rviz2",
-        output="screen",
-        arguments=["-d", PathJoinSubstitution(
-            [FindPackageShare(package_name), "config", "rviz.yaml"]
-        )],
-        parameters=[{"use_sim_time": LaunchConfiguration("use_sim_time")}],
-    )
-
     robot_controllers = PathJoinSubstitution(
         [FindPackageShare(package_name), "config", "ros2_control.yaml"]
     )
@@ -98,6 +86,16 @@ def generate_launch_description():
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'diff_drive_controller'],
         output='screen'
     )
+
+    camera_node = Node(
+        package="v4l2_camera",
+        executable="v4l2_camera_node",
+        output="screen",
+        parameters=[{
+            "image_size": [640,480],
+            "camera_frame_id": "camera_link_optical"
+        }]
+    )
     # Gazebo ROS bridge for joint states
     # gz_ros_bridge_node = Node(
     #     package='ros_gz_bridge',
@@ -121,6 +119,7 @@ def generate_launch_description():
         # spawn,
         control_node,
         rsp_node,
+        camera_node,
         # jsp_node,
         # rviz_node,
         # gz_ros_bridge_node,

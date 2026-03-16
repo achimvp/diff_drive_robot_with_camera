@@ -6,26 +6,26 @@ from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, Exec
 from launch_ros.actions import Node
 from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch_ros.parameter_descriptions import ParameterValue
+# from launch.launch_description_sources import PythonLaunchDescriptionSource
+# from launch_ros.parameter_descriptions import ParameterValue
 
 def generate_launch_description():
     package_name = "description"
 
     # Load the robot description from the xacro file
-    urdf_file = PathJoinSubstitution(
-        [FindPackageShare(package_name), "urdf", "robot.urdf.xacro"]
-    )
+    # urdf_file = PathJoinSubstitution(
+    #     [FindPackageShare(package_name), "urdf", "robot.urdf.xacro"]
+    # )
 
-    robot_description_content = Command(
-        [
-            "xacro ",
-            urdf_file,
-            " use_gazebo:=false",
-        ]
-    )
+    # robot_description_content = Command(
+    #     [
+    #         "xacro ",
+    #         urdf_file,
+    #         " use_gazebo:=false",
+    #     ]
+    # )
 
-    robot_description = ParameterValue(robot_description_content, value_type=str)
+    # robot_description = ParameterValue(robot_description_content, value_type=str)
 
     # Publish the robot pdescription using robot_state_publisher
     # rsp_node = Node(

@@ -71,6 +71,16 @@ def generate_launch_description():
         parameters=[robot_controllers],
         output="both",
     )
+    
+    camera_node = Node(
+        package="v4l2_camera",
+        executable="v4l2_camera_node",
+        output="screen",
+        parameters=[{
+            "image_size": [640,480],
+            "camera_frame_id": "camera_link_optical"
+        }]
+    )
 
     # Spawn the robot in Gazebo
     # spawn = Node(package='ros_gz_sim', executable='create',
@@ -123,6 +133,7 @@ def generate_launch_description():
         rsp_node,
         # jsp_node,
         rviz_node,
+        camera_node,
         # gz_ros_bridge_node,
         load_joint_state_broadcaster,
         load_imu_broadcaster,
