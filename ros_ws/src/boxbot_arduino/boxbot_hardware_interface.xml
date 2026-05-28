@@ -1,0 +1,7 @@
+<library path="boxbot_arduino">
+    <class name="boxbot_arduino/BoxbotSystemHardware" type="BoxbotSystemHardware" base_class_type="hardware_interface::SystemInterface">
+        <description>
+            Hardware interface for Boxbot using Arduino. This plugin interfaces with the robot's hardware components such as motors, encoders, and IMU to provide state feedback and accept control commands.
+        </description>
+    </class>
+</library>

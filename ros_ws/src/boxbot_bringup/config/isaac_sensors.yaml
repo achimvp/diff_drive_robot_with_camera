@@ -1,0 +1,10 @@
+lidar:
+  parent_link: lidar_link
+  type: rtx_lidar
+  topic: /scan
+  frame: lidar_link
+  min_range: 0.05
+  max_range: 10.0
+  horizontal_fov: 360.0
+  horizontal_resolution: 1.0
+  update_rate: 10.0
