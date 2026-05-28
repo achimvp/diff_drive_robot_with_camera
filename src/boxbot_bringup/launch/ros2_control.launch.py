@@ -15,11 +15,11 @@ from launch_ros.parameter_descriptions import ParameterValue
 ## spawn robot in gazebo
 
 def generate_launch_description():
-    package_name = "description"
+    package_name = "boxbot_bringup"
 
     # Load the robot description from the xacro file
     urdf_file = PathJoinSubstitution(
-        [FindPackageShare(package_name), "urdf", "robot.urdf.xacro"]
+        [FindPackageShare("description"), "urdf", "robot.urdf.xacro"]
     )
 
     robot_description_content = Command(
@@ -61,7 +61,7 @@ def generate_launch_description():
         name="rviz2",
         output="screen",
         arguments=["-d", PathJoinSubstitution(
-            [FindPackageShare(package_name), "config", "rviz.yaml"]
+            [FindPackageShare(package_name), "rviz", "boxbot.yaml"]
         )],
         parameters=[{"use_sim_time": LaunchConfiguration("use_sim_time")}],
     )
