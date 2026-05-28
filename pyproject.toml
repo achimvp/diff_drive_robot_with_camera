@@ -11,4 +11,5 @@ dependencies = [
     "numpy<2.0",
     "opencv-python<=4.11.0",
     "setuptools==79.0.1",
+    "ultralytics>=8.4.31",
 ]
