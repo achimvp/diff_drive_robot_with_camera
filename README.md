@@ -3,13 +3,18 @@ A template project integrating ROS 2 and Gazebo simulator.
 
 ## Included packages
 
-* `ros_gz_example_description` - holds the sdf description of the simulated system and any other assets.
+* `boxbot_arduino` - interface package which contains the nodes for communication with the Arduino via serial connection
 
-* `ros_gz_example_gazebo` - holds gazebo specific code and configurations. Namely this is where systems end up.
+* `boxbot_bringup` - holds launch files and high level utilities.
 
-* `ros_gz_example_application` - holds ros2 specific code and configurations.
+* `boxbot_interfaces` - holds message, action, and service definitions used within the Boxbot communication
 
-* `ros_gz_example_bringup` - holds launch files and high level utilities.
+* `description` - holds the URDF description of the boxbot system and meshes for complex shapes (e.g. camera turret).
+
+<!-- * `ros_gz_example_gazebo` - holds gazebo specific code and configurations. Namely this is where systems end up. -->
+
+<!-- * `ros_gz_example_application` - holds ros2 specific code and configurations. -->
+
 
 
 ## Install
@@ -75,3 +80,11 @@ Or start by creating a workspace and cloning the template repository:
     ```
 
 For a more detailed guide on using this template see [documentation](https://gazebosim.org/docs/latest/ros_gz_project_template_guide).
+
+## TODOs
+
+- Give a high level overview over the Boxbot workspace
+- Collect the launch scripts inside the `boxbot_bringup` package
+- Write some kind of RL environment/loop for training the Boxbot
+- Implement some CI/CD pipelines for the project e.g. build, lint, test
+- Implement tests for different robot features
