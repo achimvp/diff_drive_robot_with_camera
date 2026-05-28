@@ -1,7 +1,7 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, ExecuteProcess, RegisterEventHandler
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, RegisterEventHandler
 from launch.event_handlers import OnProcessExit
 from launch_ros.actions import Node
 from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution
@@ -87,29 +87,16 @@ def generate_launch_description():
         executable='spawner',
         arguments=['joint_state_broadcaster', '--controller-manager', '/controller_manager', '--service-call-timeout', '30'],
     )
-    # load_imu_broadcaster = ExecuteProcess(
-    #     cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'imu_sensor_broadcaster'],
-    #     output='screen'
-    # )
     load_imu_broadcaster = Node(
         package='controller_manager',
         executable='spawner',
         arguments=['imu_sensor_broadcaster', '--controller-manager', '/controller_manager', '--service-call-timeout', '30'],
     )
-
-    # load_camera_body_controller = ExecuteProcess(
-    #     cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'camera_body_controller'],
-    #     output='screen'
-    # )
     load_camera_body_controller = Node(
         package='controller_manager',
         executable='spawner',
         arguments=['camera_body_controller', '--controller-manager', '/controller_manager'],
     )
-    # load_diff_drive_controller = ExecuteProcess(
-    #     cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'diff_drive_controller'],
-    #     output='screen'
-    # )
     load_diff_drive_controller = Node(
         package='controller_manager',
         executable='spawner',
