@@ -1,21 +1,32 @@
-# ros_gz_project_template
-A template project integrating ROS 2 and Gazebo simulator.
+# Diff drive with camera
+A differential drive robot with a 2DOFs movable camera turret with the lovely nickname *boxbot*.
 
-## Included packages
+## Projekt overview
+The repository contains a ROS2 workspace and a separate folder with RL and simulation code.
 
-* `boxbot_arduino` - interface package which contains the nodes for communication with the Arduino via serial connection
-
-* `boxbot_bringup` - holds launch files and high level utilities.
-
-* `boxbot_interfaces` - holds message, action, and service definitions used within the Boxbot communication
-
-* `description` - holds the URDF description of the boxbot system and meshes for complex shapes (e.g. camera turret).
-
-<!-- * `ros_gz_example_gazebo` - holds gazebo specific code and configurations. Namely this is where systems end up. -->
-
-<!-- * `ros_gz_example_application` - holds ros2 specific code and configurations. -->
-
-
+```
+diff_drive_with_camera/          # Git-Root
+│
+├── ros_ws/                      # ROS2 Workspace
+│   └── src/
+│       ├── boxbot_arduino/
+│       ├── boxbot_bringup/
+│       ├── boxbot_interfaces/
+│       └── description/
+│
+└── rl/                          # RL-Code
+    ├── envs/
+    │   ├── __init__.py
+    │   └── boxbot_env.py        # Gymnasium Wrapper
+    ├── configs/                 # Hyperparameters, Training Configs
+    │   └── ppo_config.yaml
+    ├── scripts/                 # Entrypoints
+    │   ├── train.py
+    │   ├── eval.py
+    │   └── export_policy.py
+    ├── checkpoints/             # Trained Models
+    └── README.md
+```
 
 ## Install
 
@@ -38,17 +49,6 @@ For using the template with Gazebo Fortress switch to the `fortress` branch of t
     sudo apt install python3-vcstool python3-colcon-common-extensions git wget
     ```
 
-### Use as template
-Directly `Use this template` and create your project repository on Github.
-
-Or start by creating a workspace and cloning the template repository:
-
-   ```bash
-   mkdir -p ~/template_ws/src
-   cd ~/template_ws/src
-   git clone https://github.com/gazebosim/ros_gz_project_template.git
-   ```
-
 ## Usage
 
 1. Install dependencies
@@ -70,16 +70,20 @@ Or start by creating a workspace and cloning the template repository:
 1. Source the workspace
 
     ```bash
-    . ~/template_ws/install/setup.sh
+    source source_workspace.sh
     ```
 
 1. Launch the simulation
 
     ```bash
-    ros2 launch ros_gz_example_bringup diff_drive.launch.py
+    ros2 launch boxbot_bringup ros2_control.launch.py
     ```
 
-For a more detailed guide on using this template see [documentation](https://gazebosim.org/docs/latest/ros_gz_project_template_guide).
+1. Launch the real robot
+
+    ```bash
+    ros2 launch boxbot_bringup real_robot.launch.py
+    ```
 
 ## TODOs
 

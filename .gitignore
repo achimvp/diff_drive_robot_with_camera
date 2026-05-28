@@ -46,6 +46,7 @@ log/
 .idea/
 
 # Checkpoint files
+checkpoints/
 *.pt
 *.ckpt
 *.weights
