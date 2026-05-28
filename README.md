@@ -83,8 +83,8 @@ For a more detailed guide on using this template see [documentation](https://gaz
 
 ## TODOs
 
-- Give a high level overview over the Boxbot workspace
-- Collect the launch scripts inside the `boxbot_bringup` package
-- Write some kind of RL environment/loop for training the Boxbot
-- Implement some CI/CD pipelines for the project e.g. build, lint, test
-- Implement tests for different robot features
+- [ ] Give a high level overview over the Boxbot workspace
+- [x] Collect the launch scripts inside the `boxbot_bringup` package
+- [ ] Write some kind of RL environment/loop for training the Boxbot
+- [ ] Implement some CI/CD pipelines for the project e.g. build, lint, test
+- [ ] Implement tests for different robot features
