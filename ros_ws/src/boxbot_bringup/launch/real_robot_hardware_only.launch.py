@@ -102,6 +102,14 @@ def generate_launch_description():
     #     output='screen'
     # )
 
+    adapter_node = Node(
+        package='boxbot_adapter',
+        executable='boxbot_adapter',
+        parameters=[{
+            "use_sim_time": "false"
+        }],
+    )
+
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -115,4 +123,5 @@ def generate_launch_description():
         load_joint_state_broadcaster,
         delay_imu_broadcaster,
         delay_controllers,
+        adapter_node,
     ])
