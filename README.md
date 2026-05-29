@@ -12,7 +12,8 @@ diff_drive_with_camera/          # Git-Root
 │       ├── boxbot_arduino/
 │       ├── boxbot_bringup/
 │       ├── boxbot_interfaces/
-│       └── description/
+│       ├── description/
+│       └── simple_control_package/
 │
 └── rl/                          # RL-Code
     ├── envs/
@@ -27,6 +28,28 @@ diff_drive_with_camera/          # Git-Root
     ├── checkpoints/             # Trained Models
     └── README.md
 ```
+
+### `boxbot_arduino`
+ROS2 node to communicate with the Arduino via serial connection. Supports the communication with:
+- motors
+- motor encoders
+- camera turret servos
+- IMU
+
+### `boxbot_adapter`
+ROS2 node for collecting different sensor topics into one observation. Used for downstream tasks like RL.
+
+### `boxbot_bringup`
+Contains mostly configurations and launch scripts for starting the real robot or Gazebo simulation.
+
+### `boxbot_interfaces`
+Message, service, and action definitions used to communicate with the Boxbot.
+
+### `description`
+URDF files for the robot, mesh assets for complex parts, world files for Gazebo simulation.
+
+### `simple_control_package`
+
 
 ## Install
 
