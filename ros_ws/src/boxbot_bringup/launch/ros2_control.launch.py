@@ -1,7 +1,8 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, ExecuteProcess
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, RegisterEventHandler
+from launch.event_handlers import OnProcessExit
 from launch_ros.actions import Node
 from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
@@ -51,7 +52,7 @@ def generate_launch_description():
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
-        launch_arguments={'gz_args': world_file, 'shutdown_on_exit': 'true'}.items(),
+        launch_arguments={'gz_args': ['-r ', world_file], 'shutdown_on_exit': 'true'}.items(),
     )
 
     # (Optional) Start RViz to visualize the robot
@@ -76,23 +77,32 @@ def generate_launch_description():
             'topic': '/robot_description'}],
         output='screen')
 
-    load_joint_state_broadcaster = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_state_broadcaster'],
-        output='screen'
+    # load_joint_state_broadcaster = ExecuteProcess(
+    #     cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_state_broadcaster', '--service-call-timeout', '30'],
+    #     output='screen'
+    # )
+
+    load_joint_state_broadcaster = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['joint_state_broadcaster', '--controller-manager', '/controller_manager', '--service-call-timeout', '30'],
     )
-    load_imu_broadcaster = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'imu_sensor_broadcaster'],
-        output='screen'
+    load_imu_broadcaster = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['imu_sensor_broadcaster', '--controller-manager', '/controller_manager', '--service-call-timeout', '30'],
     )
-    load_camera_body_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'camera_body_controller'],
-        output='screen'
+    load_camera_body_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['camera_body_controller', '--controller-manager', '/controller_manager'],
     )
-    load_diff_drive_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'diff_drive_controller'],
-        output='screen'
+    load_diff_drive_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['diff_drive_controller', '--controller-manager', '/controller_manager'],
     )
-    # Gazebo ROS bridge for joint states
+    # Gazebo ROS bridge for clock and image/camera topics
     gz_ros_bridge_node = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
@@ -102,6 +112,27 @@ def generate_launch_description():
             }
         ],
         output='screen'
+    )
+
+    delay_joint_state_broadcaster = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=spawn,
+            on_exit=[load_joint_state_broadcaster],
+        )
+    )
+
+    delay_imu_broadcaster = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=load_joint_state_broadcaster,
+            on_exit=[load_imu_broadcaster],
+        )
+    )
+
+    delay_controllers = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=load_imu_broadcaster,
+            on_exit=[load_camera_body_controller, load_diff_drive_controller],
+        )
     )
 
 
@@ -114,11 +145,9 @@ def generate_launch_description():
         gz_sim,
         spawn,
         rsp_node,
-        # jsp_node,
         rviz_node,
         gz_ros_bridge_node,
-        load_joint_state_broadcaster,
-        load_imu_broadcaster,
-        load_camera_body_controller,
-        load_diff_drive_controller,
+        delay_joint_state_broadcaster,
+        delay_imu_broadcaster,
+        delay_controllers,
     ])

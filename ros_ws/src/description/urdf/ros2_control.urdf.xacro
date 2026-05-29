@@ -111,7 +111,7 @@
     <xacro:if value="$(arg use_gazebo)">
         <gazebo>
             <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-                <parameters>$(find description)/config/ros2_control.yaml</parameters>
+                <parameters>$(find boxbot_bringup)/config/ros2_control.yaml</parameters>
             </plugin>
         </gazebo>
     </xacro:if>
