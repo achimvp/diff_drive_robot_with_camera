@@ -24,7 +24,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'boxbot_adapter = boxbot_adapter.boxbot_adapter:main',
+            'boxbot_observation_adapter = boxbot_adapter.boxbot_observation_adapter:main',
+            'boxbot_action_adapter = boxbot_adapter.boxbot_action_adapter:main',
         ],
     },
 )
