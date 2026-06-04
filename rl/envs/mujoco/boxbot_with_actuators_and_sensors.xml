@@ -1,0 +1,19 @@
+<mujoco model="boxbot_with_actuators_and_sensors">
+    <include file="boxbot.xml" />
+    <actuator>
+        <!-- <motor name="left_wheel_motor" joint="left_wheel_joint" ctrlrange="-1 1" gear="10"/>
+        <motor name="right_wheel_motor" joint="right_wheel_joint" ctrlrange="-1 1" gear="10"/> -->
+        <velocity name="left_wheel_velocity" joint="left_wheel_joint" forcerange="-0.53 0.53" ctrlrange="-9 9" kv="0.52"/>
+        <velocity name="right_wheel_velocity" joint="right_wheel_joint" forcerange="-0.53 0.53" ctrlrange="-9 9" kv="0.52"/>
+        <position name="camera_body_motor" joint="camera_body_joint" forcerange="-0.14 0.14" ctrlrange="-1.5708 1.5708" kp="0.17" />
+        <position name="camera_head_motor" joint="camera_head_joint" forcerange="-0.14 0.14" ctrlrange="-1.5708 1.5708" kp="0.17" />
+    </actuator>
+    <sensor>
+        <jointpos name="camera_body_pos" joint="camera_body_joint"/>
+        <jointpos name="camera_head_pos" joint="camera_head_joint"/>
+        <jointvel name="left_wheel_vel" joint="left_wheel_joint"/>
+        <jointvel name="right_wheel_vel" joint="right_wheel_joint"/>
+        <gyro name="imu_gyro" site="imu"/>
+        <accelerometer name="imu_accel" site="imu"/>
+    </sensor>
+</mujoco>
