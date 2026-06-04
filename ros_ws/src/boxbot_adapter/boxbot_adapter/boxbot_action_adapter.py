@@ -3,7 +3,7 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float64MultiArray
-from nav_msgs.msg import Odometry
+from geometry_msgs.msg import TwistStamped
 
 class BoxbotActionAdapterNode(Node):
 
@@ -22,15 +22,15 @@ class BoxbotActionAdapterNode(Node):
         # create the publisher nodes
         ## publish to the odometry topic
         self.odom_publisher = self.create_publisher(
-            Odometry,
-            'diff_drive_controller/odom',
+            TwistStamped,
+            'diff_drive_controller/cmd_vel',
             10
         )
 
         ## publish to the camera turret controller topic
         self.camera_turret_position_publisher = self.create_publisher(
             Float64MultiArray,
-            'camera_turret_controller/command',
+            'camera_body_controller/commands',
             10
         )
 
@@ -39,11 +39,11 @@ class BoxbotActionAdapterNode(Node):
     def action_callback(self, msg: Float64MultiArray):
         self.get_logger().info(f"Received action: {msg}")
         # publish the action to the appropriate topics
-        odom_msg = Odometry()
-        odom_msg.header.stamp = self.get_clock().now().to_msg()
-        odom_msg.twist.twist.linear.x = msg.data[0] # assuming msg.data is a list or array of [linear_vel_x, linear_vel_y]
-        odom_msg.twist.twist.angular.z = msg.data[1] # assuming msg.data[2] is the angular velocity around the z-axis
-        self.odom_publisher.publish(odom_msg)
+        twist_msg = TwistStamped()
+        twist_msg.header.stamp = self.get_clock().now().to_msg()
+        twist_msg.twist.linear.x = msg.data[0] # assuming msg.data is a list or array of [linear_vel_x, linear_vel_y]
+        twist_msg.twist.angular.z = msg.data[1] # assuming msg.data[2] is the angular velocity around the z-axis
+        self.odom_publisher.publish(twist_msg)
 
         camera_turret_position_msg = Float64MultiArray()
         camera_turret_position_msg.data = [msg.data[2], msg.data[3]] # assuming msg.data[3] and msg.data[4] are the yaw and pitch values
