@@ -135,12 +135,17 @@ def generate_launch_description():
         )
     )
 
-    adapter_node = Node(
+    adapter_observation_node = Node(
         package="boxbot_adapter",
-        executable="boxbot_adapter",
+        executable="boxbot_observation_adapter",
         parameters=[{"use_sim_time": LaunchConfiguration("use_sim_time")}],
     )
 
+    adapter_action_node = Node(
+        package="boxbot_adapter",
+        executable="boxbot_action_adapter",
+        parameters=[{"use_sim_time": LaunchConfiguration("use_sim_time")}],
+    )
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -156,5 +161,6 @@ def generate_launch_description():
         delay_joint_state_broadcaster,
         delay_imu_broadcaster,
         delay_controllers,
-        adapter_node,
+        adapter_observation_node,
+        adapter_action_node,
     ])

@@ -8,12 +8,12 @@ from sensor_msgs.msg import CameraInfo, Imu, Image, JointState
 from nav_msgs.msg import Odometry
 from tf_transformations import euler_from_quaternion
 
-class BoxbotAdapterNode(Node):
+class BoxbotObservationAdapterNode(Node):
 
     PUBLISH_RATE_HZ = 20.0
 
     def __init__(self):
-        super().__init__("boxbot_adapter_node")
+        super().__init__("boxbot_observation_adapter_node")
 
         # initialize instance variables to store the latest observations
         self._latest_odometry_position = None # this will store the latest position data from the odometry topic (x, y, yaw)
@@ -74,7 +74,7 @@ class BoxbotAdapterNode(Node):
         # create the publisher node
         self.observation_publisher = self.create_publisher(
             BoxbotObservation,
-            'boxbot_observation',
+            'rl/boxbot_observation',
             10
         )
 
@@ -159,8 +159,8 @@ class BoxbotAdapterNode(Node):
 def main(args=None):
     try:
         rclpy.init(args=args)
-        boxbot_adapter_node = BoxbotAdapterNode()
-        rclpy.spin(boxbot_adapter_node)
+        boxbot_observation_adapter_node = BoxbotObservationAdapterNode()
+        rclpy.spin(boxbot_observation_adapter_node)
     except KeyboardInterrupt:
         pass
     except Exception as e:
